@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GITI XEM ENGINE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Noto+Sans+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --accent: #00ff88;
+            --bg: #050505;
+            --panel: rgba(20, 20, 20, 0.8);
+            --border: rgba(255, 255, 255, 0.1);
+            --happy-text: #00ff88;
+        }
+        body {
+            background-color: var(--bg);
+            color: #fff;
+            font-family: 'Space Grotesk', sans-serif;
+            overflow: hidden;
+            font-size: 12px;
+        }
+        .studio-font {
+            font-family: 'Noto Sans Display', sans-serif;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-style: italic;
+        }
+        .glass-panel {
+            background: var(--panel);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+        .accent-text { color: var(--accent); }
+        .accent-bg { background-color: var(--accent); }
+        
+        .label-happy {
+            font-size: 9px;
+            color: var(--happy-text);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+            opacity: 0.9;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            background: #1a1a1a;
+            height: 3px;
+            border-radius: 2px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .scroll-hide::-webkit-scrollbar { width: 4px; }
+        .scroll-hide::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        
+        #peakMeter {
+            display: grid;
+            grid-template-columns: repeat(20, 1fr);
+            gap: 2px;
+            height: 4px;
+        }
+        .meter-bar { background: #222; transition: height 0.1s; }
+    </style>
+</head>
+<body class="h-screen flex flex-col p-3 space-y-3">
+
+    <!-- Header without STUDIO text -->
+    <header class="flex justify-between items-center px-2">
+        <div class="flex items-center gap-4">
+            <div id="status" class="label-happy italic">System Optimized</div>
+        </div>
+        <div class="flex gap-2 items-center">
+            <div id="peakMeter" class="w-32"></div>
+            <span class="label-happy">MASTER_OUT</span>
+        </div>
+    </header>
+
+    <main class="flex-1 flex gap-3 overflow-hidden">
+        
+        <!-- Left: Toolbelt -->
+        <aside class="w-72 flex flex-col gap-3">
+            <section class="glass-panel p-3">
+                <input type="file" id="videoInput" accept="video/*" class="hidden">
+                <button onclick="document.getElementById('videoInput').click()" class="w-full bg-zinc-800 border border-zinc-700 hover:border-accent text-white py-2 rounded text-[11px] font-bold transition-all uppercase italic">
+                    Load Media
+                </button>
+            </section>
+
+            <section class="glass-panel flex-1 flex flex-col overflow-hidden">
+                <div class="p-3 border-b border-white/5">
+                    <h2 class="label-happy !text-zinc-500">Process Node</h2>
+                </div>
+                <div class="flex-1 overflow-y-auto scroll-hide p-3 space-y-6">
+                    
+                    <div>
+                        <h3 class="text-xs font-bold italic mb-3 opacity-80 accent-text">WAVE_ENGINE</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="space-y-1">
+                                <label class="label-happy">FREQ_X</label>
+                                <input type="range" data-effect="wave" data-param="freqX" min="0" max="50" step="0.1" value="10" class="w-full">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="label-happy">FREQ_Y</label>
+                                <input type="range" data-effect="wave" data-param="freqY" min="0" max="50" step="0.1" value="10" class="w-full">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="label-happy">AMP_X</label>
+                                <input type="range" data-effect="wave" data-param="ampX" min="0" max="0.2" step="0.005" value="0.02" class="w-full">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="label-happy">AMP_Y</label>
+                                <input type="range" data-effect="wave" data-param="ampY" min="0" max="0.2" step="0.005" value="0.02" class="w-full">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="label-happy">PHASE_X</label>
+                                <input type="range" data-effect="wave" data-param="phaseX" min="0" max="6.28" step="0.01" value="0" class="w-full">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="label-happy">PHASE_Y</label>
+                                <input type="range" data-effect="wave" data-param="phaseY" min="0" max="6.28" step="0.01" value="0" class="w-full">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="label-happy">SPEED_X</label>
+                                <input type="range" data-effect="wave" data-param="speedX" min="0" max="10" step="0.1" value="1" class="w-full">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="label-happy">SPEED_Y</label>
+                                <input type="range" data-effect="wave" data-param="speedY" min="0" max="10" step="0.1" value="1" class="w-full">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xs font-bold italic mb-3 opacity-80 accent-text">SWIRL_NODE</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3">
+                                <span class="label-happy w-12">Radius</span>
+                                <input type="range" data-effect="swirl" data-param="radius" min="0" max="1" step="0.01" value="0.5" class="flex-1">
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="label-happy w-12">Strength</span>
+                                <input type="range" data-effect="swirl" data-param="strength" min="-10" max="10" step="0.1" value="0" class="flex-1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xs font-bold italic mb-3 opacity-80 accent-text">LENS_FX</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3">
+                                <span class="label-happy w-12">Pinch</span>
+                                <input type="range" data-effect="pinch" data-param="amount" min="-1" max="1" step="0.01" value="0" class="flex-1">
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="label-happy w-12">Feather</span>
+                                <input type="range" data-effect="pinch" data-param="feather" min="0" max="1" step="0.01" value="0.1" class="flex-1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <div class="flex items-center gap-3 glass-panel p-2 bg-white/5">
+                            <span class="label-happy w-14 font-bold accent-text italic">Color Hue</span>
+                            <input type="range" data-effect="hue" data-param="shift" min="0" max="360" step="1" value="0" class="flex-1">
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </aside>
+
+        <!-- Center: Monitor -->
+        <section class="flex-1 flex flex-col gap-3">
+            <div class="flex-1 glass-panel relative overflow-hidden group">
+                <div class="absolute inset-0 flex items-center justify-center p-4">
+                    <canvas id="glCanvas" class="max-w-full max-h-full shadow-2xl"></canvas>
+                </div>
+                <div class="absolute bottom-4 left-4 flex gap-4 bg-black/60 px-3 py-1 rounded-full backdrop-blur">
+                    <span class="label-happy">RES: <span id="viewRes">0x0</span></span>
+                </div>
+            </div>
+
+            <div class="glass-panel p-3 flex flex-col gap-2">
+                <div class="flex items-center gap-4">
+                    <button id="playBtn" class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all">
+                        <svg id="playIcon" viewBox="0 0 24 24" class="w-5 h-5 fill-current"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    <div class="flex-1 flex flex-col gap-1">
+                        <div class="flex justify-between font-mono">
+                            <span id="timeDisplay" class="label-happy">00:00:00</span>
+                            <span id="durationDisplay" class="label-happy">00:00:00</span>
+                        </div>
+                        <div class="h-1.5 bg-zinc-900 rounded-full relative cursor-pointer group" id="timelineTrack">
+                            <div id="timelineProgress" class="absolute h-full accent-bg rounded-full w-0 transition-all duration-75">
+                                <div class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 accent-bg rounded-full shadow-[0_0_10px_var(--accent)] scale-0 group-hover:scale-100 transition-transform"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right: Master Output -->
+        <aside class="w-56 flex flex-col gap-3">
+            <section class="glass-panel p-4 flex flex-col gap-4">
+                <h2 class="label-happy !text-zinc-500 border-b border-white/5 pb-2">Export</h2>
+                
+                <div class="space-y-4">
+                    <div class="space-y-1">
+                        <label class="label-happy opacity-60">Profile</label>
+                        <select id="resSelect" class="w-full bg-zinc-900 border border-zinc-700 rounded p-2 text-[11px] font-bold text-white appearance-none uppercase italic">
+                            <option value="1080">1080p Ultra</option>
+                            <option value="720">720p HD</option>
+                            <option value="540">540p Mid</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="label-happy opacity-60">FPS</label>
+                        <select id="fpsSelect" class="w-full bg-zinc-900 border border-zinc-700 rounded p-2 text-[11px] font-bold text-white appearance-none uppercase italic">
+                            <option value="60">60 FPS</option>
+                            <option value="30" selected>30 FPS</option>
+                            <option value="24">24 FPS</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button id="exportBtn" class="w-full accent-bg text-black py-3 rounded text-[11px] font-black tracking-tighter hover:brightness-110 transition-all uppercase italic">
+                        Render Output
+                    </button>
+                </div>
+
+                <div id="exportStatus" class="mt-2 space-y-2 hidden">
+                    <div class="flex justify-between items-center">
+                        <span class="label-happy animate-pulse">ENCODING...</span>
+                        <span id="exportPercent" class="label-happy">0%</span>
+                    </div>
+                    <div class="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
+                        <div id="exportBar" class="h-full accent-bg w-0 transition-all"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="glass-panel p-3 mt-auto bg-gradient-to-t from-emerald-500/10 to-transparent">
+                <div class="label-happy mb-1 tracking-widest">Buffer Status</div>
+                <div class="flex gap-1 h-8 items-end">
+                    <div class="flex-1 bg-accent/20 h-2"></div>
+                    <div class="flex-1 bg-accent/20 h-5"></div>
+                    <div class="flex-1 bg-accent/20 h-3"></div>
+                    <div class="flex-1 bg-accent/40 h-8"></div>
+                    <div class="flex-1 bg-accent/20 h-4"></div>
+                </div>
+            </section>
+        </aside>
+    </main>
+
+    <script>
+        const canvas = document.getElementById('glCanvas');
+        const gl = canvas.getContext('webgl', { preserveDrawingBuffer: true });
+        const videoInput = document.getElementById('videoInput');
+        const video = document.createElement('video');
+        video.crossOrigin = "anonymous";
+        video.muted = false; 
+        video.playsInline = true;
+
+        let program;
+        let texture;
+        let animationId;
+        let isPlaying = false;
+        let audioCtx, analyser, dataArray;
+
+        const state = {
+            wave: { freqX: 10, freqY: 10, ampX: 0.02, ampY: 0.02, speedX: 1, speedY: 1, phaseX: 0, phaseY: 0, smooth: 1 },
+            swirl: { radius: 0.5, strength: 0, centerX: 0.5, centerY: 0.5 },
+            pinch: { radius: 0.5, amount: 0, centerX: 0.5, centerY: 0.5, feather: 0.1, aspect: 1.0 },
+            hue: { shift: 0 }
+        };
+
+        const vsSource = `
+            attribute vec2 a_position;
+            attribute vec2 a_texCoord;
+            varying vec2 v_texCoord;
+            void main() {
+                gl_Position = vec4(a_position, 0, 1);
+                v_texCoord = a_texCoord;
+            }
+        `;
+
+        const fsSource = `
+            precision mediump float;
+            varying vec2 v_texCoord;
+            uniform sampler2D u_image;
+            uniform float u_time;
+            uniform vec2 u_waveFreq;
+            uniform vec2 u_waveAmp;
+            uniform vec2 u_waveSpeed;
+            uniform vec2 u_wavePhase;
+            uniform float u_waveSmooth;
+            uniform float u_swirlRadius;
+            uniform float u_swirlStrength;
+            uniform vec2 u_swirlCenter;
+            uniform float u_pinchRadius;
+            uniform float u_pinchAmount;
+            uniform vec2 u_pinchCenter;
+            uniform float u_pinchFeather;
+            uniform float u_pinchAspect;
+            uniform float u_hueShift;
+
+            vec3 rgb2hsv(vec3 c) {
+                vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+                vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+                vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+                float d = q.x - min(q.w, q.y);
+                float e = 1.0e-10;
+                return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+            }
+
+            vec3 hsv2rgb(vec3 c) {
+                vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+                vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+                return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+            }
+
+            void main() {
+                vec2 uv = v_texCoord;
+                float waveX = sin(uv.y * u_waveFreq.x + u_time * u_waveSpeed.x + u_wavePhase.x) * u_waveAmp.x;
+                float waveY = sin(uv.x * u_waveFreq.y + u_time * u_waveSpeed.y + u_wavePhase.y) * u_waveAmp.y;
+                uv += vec2(waveX, waveY) * u_waveSmooth;
+
+                vec2 swirlCoord = uv - u_swirlCenter;
+                float dist = length(swirlCoord);
+                if (dist < u_swirlRadius) {
+                    float percent = (u_swirlRadius - dist) / u_swirlRadius;
+                    float theta = percent * percent * u_swirlStrength;
+                    float s = sin(theta);
+                    float c = cos(theta);
+                    swirlCoord = vec2(dot(swirlCoord, vec2(c, -s)), dot(swirlCoord, vec2(s, c)));
+                }
+                uv = swirlCoord + u_swirlCenter;
+
+                vec2 pinchCoord = uv - u_pinchCenter;
+                pinchCoord.x *= u_pinchAspect;
+                float pDist = length(pinchCoord);
+                if (pDist < u_pinchRadius) {
+                    float pPercent = pDist / u_pinchRadius;
+                    float power = u_pinchAmount > 0.0 ? 1.0 + u_pinchAmount * 2.0 : 1.0 / (1.0 - u_pinchAmount * 2.0);
+                    float mixVal = smoothstep(u_pinchRadius, u_pinchRadius - u_pinchFeather, pDist);
+                    float newDist = pow(pPercent, power) * u_pinchRadius;
+                    vec2 delta = normalize(pinchCoord) * newDist;
+                    delta.x /= u_pinchAspect;
+                    uv = mix(uv, u_pinchCenter + delta, mixVal);
+                }
+
+                vec4 color = texture2D(u_image, uv);
+                vec3 hsv = rgb2hsv(color.rgb);
+                hsv.x = fract(hsv.x + u_hueShift / 360.0);
+                color.rgb = hsv2rgb(hsv);
+                gl_FragColor = color;
+            }
+        `;
+
+        function initAudio() {
+            if(audioCtx) return;
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioCtx.createAnalyser();
+            const source = audioCtx.createMediaElementSource(video);
+            source.connect(analyser);
+            analyser.connect(audioCtx.destination);
+            analyser.fftSize = 64;
+            dataArray = new Uint8Array(analyser.frequencyBinCount);
+            
+            const meter = document.getElementById('peakMeter');
+            for(let i=0; i<20; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'meter-bar';
+                meter.appendChild(bar);
+            }
+        }
+
+        function updateAudioMeter() {
+            if(!analyser) return;
+            analyser.getByteFrequencyData(dataArray);
+            const bars = document.querySelectorAll('.meter-bar');
+            bars.forEach((bar, i) => {
+                const val = dataArray[i] || 0;
+                bar.style.height = (val / 255 * 100) + '%';
+                bar.style.backgroundColor = val > 200 ? '#ff0055' : 'var(--accent)';
+            });
+        }
+
+        function initGL() {
+            const vs = gl.createShader(gl.VERTEX_SHADER);
+            gl.shaderSource(vs, vsSource);
+            gl.compileShader(vs);
+            const fs = gl.createShader(gl.FRAGMENT_SHADER, fsSource);
+            gl.shaderSource(fs, fsSource);
+            gl.compileShader(fs);
+            program = gl.createProgram();
+            gl.attachShader(program, vs);
+            gl.attachShader(program, fs);
+            gl.linkProgram(program);
+            gl.useProgram(pro
