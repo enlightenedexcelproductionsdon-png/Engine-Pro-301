@@ -1,0 +1,31 @@
+@font-face {
+    font-family: 'Animal Planet';
+    src: url('fonts/animal-planet.woff2') format('woff2');
+}
+
+body {
+    background-color: #000000;
+    color: #ffffff;
+    font-family: 'Animal Planet', sans-serif;
+}
+
+.editor-container {
+    border: 2px solid #ffffff;
+    background: #000000;
+    padding: 20px;
+}
+
+button, select {
+    background: #ffffff;
+    color: #000000;
+    border: none;
+    font-family: 'Animal Planet';
+    padding: 5px 10px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+input[type="range"] {
+    accent-color: #ffffff;
+}
+
